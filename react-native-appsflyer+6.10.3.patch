@@ -1,0 +1,14 @@
+diff --git a/node_modules/react-native-appsflyer/react-native.config.js b/node_modules/react-native-appsflyer/react-native.config.js
+index dfbe81b..9280357 100644
+--- a/node_modules/react-native-appsflyer/react-native.config.js
++++ b/node_modules/react-native-appsflyer/react-native.config.js
+@@ -3,7 +3,8 @@ const path = require('path');
+ module.exports = {
+   dependency: {
+     platforms: {
+-      ios: { podspecPath: path.join(__dirname, 'react-native-appsflyer.podspec') },
++      // https://github.com/AppsFlyerSDK/appsflyer-react-native-plugin/issues/395
++      // ios: { podspecPath: path.join(__dirname, 'react-native-appsflyer.podspec') },
+       android: {
+         packageImportPath: 'import com.appsflyer.reactnative.RNAppsFlyerPackage;',
+         packageInstance: 'new RNAppsFlyerPackage()',

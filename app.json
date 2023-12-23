@@ -1,0 +1,105 @@
+{
+  "expo": {
+    "name": "princesdesert",
+    "slug": "princesofdesert",
+    "scheme": "princesdesert",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#1a1d1e",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#1a1d1e"
+    },
+    "assetBundlePatterns": [
+      "assets/*",
+      "assets/**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "associatedDomains": [
+        "applinks:princesdesert.onelink.me"
+      ],
+      "bundleIdentifier": "com.prilka.princesdesert"
+    },
+    "android": {
+      "package": "com.prilka.princesdesert",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "https",
+              "host": "princesdesert.onelink.me",
+              "pathPrefix": "/RGIK"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        },
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "princesdesert"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "29c74ec1-d054-4eff-8b14-6b31a293020e",
+        "build": {
+          "experimental": {
+            "ios": {
+              "appExtensions": [
+                {
+                  "targetName": "OneSignalNotificationServiceExtension",
+                  "bundleIdentifier": "com.prilka.princesdesert.OneSignalNotificationServiceExtension",
+                  "entitlements": {
+                    "com.apple.security.application-groups": [
+                      "group.com.prilka.princesdesert.onesignal"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "oneSignalAppId": "77827a09-b1cd-44bd-b75e-35df6e54b42d"
+    },
+    "owner": "varshavsky.leetio",
+    "plugins": [
+      [
+        "onesignal-expo-plugin",
+        {
+          "mode": "development"
+        }
+      ],
+      [
+        "react-native-appsflyer",
+        {}
+      ]
+    ],
+    "updates": {
+      "url": "https://u.expo.dev/83c3d1de-0cdb-416a-b0dc-7fc07e74cb4a"
+    }
+  }
+}
