@@ -1,12 +1,16 @@
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useRef, useState } from "react";
-import { AppState } from "react-native";
+import { AccessibilityInfo, ActivityIndicator, AppState, Button, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import WebView from "react-native-webview";
+import * as Sentry from '@sentry/react-native';
 
+const height = Dimensions.get("window").height;
+const width = Dimensions.get("window").width;
 export default function HomeScreen({ navigation, route }) {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
+  const [isLoaded, setIsLoaded] = useState(false);
   // const [deepLink, setDeepLink] = useState<any>(route.params?.deepLink);
   const deepLink = route.params?.deepLink;
 
@@ -58,16 +62,22 @@ export default function HomeScreen({ navigation, route }) {
     // console.log("webViewLink", webViewLink);
 
     return ["active", "inactive"].includes(appStateVisible) ? (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }} edges={["top"]}>
+      <SafeAreaView style={{ flex: 1, paddingTop: 15 }} edges={["top"]}>
         <WebView
+          onLoad={() => setIsLoaded(true)}
           source={{ uri: domain + webViewLink }}
-          style={{ flex: 1 }}
           originWhitelist={["*"]}
           sharedCookiesEnabled={true}
           thirdPartyCookiesEnabled={true}
           javascriptEnabled={true}
         />
-        <StatusBar style="dark" />
+        {!isLoaded && (
+           <ActivityIndicator
+          style={{ position: "absolute", top: height / 2, left: width / 2 }}
+          size="large"
+        />
+        )}
+        <StatusBar style="light" />
       </SafeAreaView>
     ) : null;
   }

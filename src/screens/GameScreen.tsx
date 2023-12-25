@@ -8,7 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { common } from "styles/common";
 export default function GameScreen() {
   const { assets } = useContext(AssetsContext);
-  const background = assets[0] ? assets[0].uri : null;
+  const background = assets[0] ? assets[0].localUri : null;
   return (
     <ImageBackground source={background} style={[common.flex]} contentFit={"cover"}>
       <SafeAreaView style={[common.flex]}>

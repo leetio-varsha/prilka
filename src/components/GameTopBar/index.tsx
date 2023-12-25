@@ -10,7 +10,7 @@ export const GameTopBar = () => {
         <TouchableOpacity onPress={() => navigation.push("GameLobbyScreen")}>
           <Text style={[styles.text]}>Back</Text>
         </TouchableOpacity>
-        <Text style={[styles.text]}>Points: 0</Text>
+        {/*<Text style={[styles.text]}>Points: 0</Text>*/}
       </View>
       <Text style={[styles.title]}>Princess of Deserts</Text>
     </View>

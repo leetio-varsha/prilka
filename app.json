@@ -22,9 +22,11 @@
       "associatedDomains": [
         "applinks:princesdesert.onelink.me"
       ],
+      "buildNumber": "1",
       "bundleIdentifier": "com.prilka.princesdesert"
     },
     "android": {
+      "versionCode": 6,
       "package": "com.prilka.princesdesert",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -88,6 +90,12 @@
     "owner": "varshavsky.leetio",
     "plugins": [
       [
+        "expo-updates",
+        {
+          "username": "varshavsky.leetio"
+        }
+      ],
+      [
         "onesignal-expo-plugin",
         {
           "mode": "development"
@@ -96,10 +104,26 @@
       [
         "react-native-appsflyer",
         {}
-      ]
+      ],
+      "sentry-expo"
     ],
     "updates": {
-      "url": "https://u.expo.dev/83c3d1de-0cdb-416a-b0dc-7fc07e74cb4a"
+      "enabled": true,
+      "url": "https://u.expo.dev/29c74ec1-d054-4eff-8b14-6b31a293020e"
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+     "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "sentry",
+            "project": "prilka"
+          }
+        }
+      ]
     }
   }
 }

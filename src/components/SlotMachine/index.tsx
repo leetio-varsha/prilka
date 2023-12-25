@@ -80,6 +80,8 @@ export const SlotMachineApp = () => {
             {boardItems.map((item, index) => (
               <View key={`${boardItemKey}-${item}`} style={[styles.tile]}>
                 <FlatList
+                  showsVerticalScrollIndicator={false}
+                  showsHorizontalScrollIndicator={false}
                   topId={boardItemKey}
                   id={index}
                   ref={(el) => (slotRefs.current[item] = el)}

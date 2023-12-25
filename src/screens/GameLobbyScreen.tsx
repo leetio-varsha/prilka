@@ -8,7 +8,7 @@ import { common } from "styles/common";
 
 export default function GameLobbyScreen({ navigation }) {
   const { assets } = useContext(AssetsContext);
-  const background = assets[0] ? assets[0].uri : null;
+  const background = assets[0] ? assets[0].localUri : null;
   return (
     <ImageBackground source={background} style={[common.flex]} contentFit={"cover"}>
       <SafeAreaView style={[common.flex]}>
@@ -20,9 +20,9 @@ export default function GameLobbyScreen({ navigation }) {
           <TouchableOpacity style={[styles.cta]} onPress={() => navigation.push("GameScreen")}>
             <Text style={[styles.ctaText]}>Play</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.cta]} onPress={() => {}}>
-            <Text style={[styles.ctaText]}>Points history</Text>
-          </TouchableOpacity>
+          {/*<TouchableOpacity style={[styles.cta]} onPress={() => {}}>*/}
+          {/*  <Text style={[styles.ctaText]}>Points history</Text>*/}
+          {/*</TouchableOpacity>*/}
         </View>
       </SafeAreaView>
       <StatusBar style="light" />

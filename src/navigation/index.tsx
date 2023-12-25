@@ -31,9 +31,8 @@ function Navigation() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
       <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>} theme={themeColor}>
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName={'ManageScreen'}>
           {Screens.map((screen) => (
             <Stack.Screen
               key={screen.name}
@@ -44,7 +43,6 @@ function Navigation() {
           ))}
         </Stack.Navigator>
       </NavigationContainer>
-    </View>
   );
 }
 

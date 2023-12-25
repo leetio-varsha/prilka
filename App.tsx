@@ -1,13 +1,17 @@
+import * as Sentry from "@sentry/react-native";
 import { AssetsContextProvider } from "components/AssetsContext";
 import Constants from "expo-constants";
-import * as Notifications from "expo-notifications";
 import * as SplashScreen from "expo-splash-screen";
 import * as Updates from "expo-updates";
 import Navigation from "navigation/";
-import { useEffect, useState } from "react";
+import { View } from "react-native";
 import appsFlyer from "react-native-appsflyer";
 import { OneSignal } from "react-native-onesignal";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+
+Sentry.init({
+  dsn: "https://d45f95bfcc3da0435cbdf7bf2ce8e8fc@o4505668978212864.ingest.sentry.io/4506457161072640",
+});
 
 appsFlyer.initSdk(
   {
@@ -20,11 +24,14 @@ appsFlyer.initSdk(
   },
   (result) => {
     console.log("result", result);
+    // Sentry.captureException(`appsFlyer result: ${JSON.stringify(result)}`);
   },
   (error) => {
-    console.error(error);
+    console.log("error", error);
+    // Sentry.captureException(`appsFlyer error: ${JSON.stringify(error)}`);
   }
 );
+
 OneSignal.initialize(Constants.expoConfig.extra.oneSignalAppId);
 
 SplashScreen.preventAutoHideAsync()
@@ -42,48 +49,24 @@ function Root() {
 }
 
 export default function App() {
-  const [permissionGranted, setPermissionGranted] = useState<boolean | null | -1>(-1);
-
-  useEffect(() => {
-    if (!permissionGranted || permissionGranted === -1) {
-      Notifications.requestPermissionsAsync().then((response) => {
-        // @ts-ignore
-        setPermissionGranted(response === "granted");
-      });
-    }
-  }, [permissionGranted]);
-
   const eventListener = async (event) => {
     if (event.type === Updates.UpdateEventType.ERROR) {
-      // Handle error
     } else if (event.type === Updates.UpdateEventType.NO_UPDATE_AVAILABLE) {
-      // Handle no update available
     } else if (event.type === Updates.UpdateEventType.UPDATE_AVAILABLE) {
+      // Sentry.captureException(`New update available: ${JSON.stringify(event)}`);
       await Updates.fetchUpdateAsync();
       await Updates.reloadAsync();
     }
   };
   Updates.useUpdateEvents(eventListener);
 
-  useEffect(() => {
-    const setInitialPermission = async () => {
-      const granted = OneSignal.Notifications.hasPermission();
-
-      // console.log("INITIAL PERM", granted);
-
-      setPermissionGranted(granted ?? null);
-    };
-
-    // FIXME: Hack to get correct value from `hasPermission()`
-    // @see https://github.com/OneSignal/react-native-onesignal/issues/1506#issuecomment-1706332448
-    setTimeout(setInitialPermission, 0);
-  }, []);
-
   return (
-    <AssetsContextProvider>
-      <SafeAreaProvider>
-        <Root />
-      </SafeAreaProvider>
-    </AssetsContextProvider>
+    <View style={{ flex: 1 }}>
+      <AssetsContextProvider>
+        <SafeAreaProvider>
+          <Root />
+        </SafeAreaProvider>
+      </AssetsContextProvider>
+    </View>
   );
 }

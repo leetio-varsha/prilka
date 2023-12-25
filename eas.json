@@ -13,7 +13,10 @@
       "channel": "preview"
     },
     "production": {
-      "channel": "production"
+      "channel": "production",
+      "env": {
+        "SENTRY_AUTH_TOKEN": "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"
+      }
     }
   }
 }
