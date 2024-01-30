@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "princesdesert",
-    "slug": "princesofdesert",
-    "scheme": "princesdesert",
+    "name": "gamblsuite",
+    "slug": "gamblsuite",
+    "scheme": "gamblsuite",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,14 +20,17 @@
     "ios": {
       "supportsTablet": true,
       "associatedDomains": [
-        "applinks:princesdesert.onelink.me"
+        "applinks:gamblsuite.onelink.me"
       ],
       "buildNumber": "1",
-      "bundleIdentifier": "com.prilka.princesdesert"
+      "bundleIdentifier": "com.gambl.suite",
+      "config": {
+      "usesNonExemptEncryption": false
+    }
     },
     "android": {
-      "versionCode": 6,
-      "package": "com.prilka.princesdesert",
+      "versionCode": 8,
+      "package": "com.gambl.suite",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -38,7 +41,7 @@
           "data": [
             {
               "scheme": "https",
-              "host": "princesdesert.onelink.me",
+              "host": "gamblsuite.onelink.me",
               "pathPrefix": "/RGIK"
             }
           ],
@@ -51,7 +54,7 @@
           "action": "VIEW",
           "data": [
             {
-              "scheme": "princesdesert"
+              "scheme": "gamblsuite"
             }
           ],
           "category": [
@@ -66,46 +69,21 @@
     },
     "extra": {
       "eas": {
-        "projectId": "29c74ec1-d054-4eff-8b14-6b31a293020e",
-        "build": {
-          "experimental": {
-            "ios": {
-              "appExtensions": [
-                {
-                  "targetName": "OneSignalNotificationServiceExtension",
-                  "bundleIdentifier": "com.prilka.princesdesert.OneSignalNotificationServiceExtension",
-                  "entitlements": {
-                    "com.apple.security.application-groups": [
-                      "group.com.prilka.princesdesert.onesignal"
-                    ]
-                  }
-                }
-              ]
-            }
-          }
-        }
-      },
-      "oneSignalAppId": "77827a09-b1cd-44bd-b75e-35df6e54b42d"
+        "projectId": "29c74ec1-d054-4eff-8b14-6b31a293020e"
+      }
     },
     "owner": "varshavsky.leetio",
     "plugins": [
       [
-        "expo-updates",
-        {
-          "username": "varshavsky.leetio"
-        }
-      ],
-      [
-        "onesignal-expo-plugin",
-        {
-          "mode": "development"
-        }
-      ],
-      [
         "react-native-appsflyer",
         {}
       ],
-      "sentry-expo"
+      [
+        "expo-tracking-transparency",
+        {
+          "userTrackingPermission": "We use your data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this policy."
+        }
+      ]
     ],
     "updates": {
       "enabled": true,
@@ -113,17 +91,6 @@
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
-    },
-     "hooks": {
-      "postPublish": [
-        {
-          "file": "sentry-expo/upload-sourcemaps",
-          "config": {
-            "organization": "sentry",
-            "project": "prilka"
-          }
-        }
-      ]
     }
   }
 }

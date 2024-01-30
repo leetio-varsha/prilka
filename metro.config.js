@@ -1,10 +1,6 @@
-// Learn more https://docs.expo.io/guides/customizing-metro
-const { getDefaultConfig } = require('expo/metro-config');
-const {createSentryMetroSerializer} = require('@sentry/react-native/dist/js/tools/sentryMetroSerializer');
+const { getDefaultConfig } = require("@expo/metro-config");
 
-/** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname);
+const defaultConfig = getDefaultConfig(__dirname);
+defaultConfig.resolver.sourceExts.push("cjs");
 
-config.serializer.customSerializer = createSentryMetroSerializer();
-
-module.exports = config;
+module.exports = defaultConfig;

@@ -1,72 +1,80 @@
-import * as Sentry from "@sentry/react-native";
-import { AssetsContextProvider } from "components/AssetsContext";
+import api from "api";
+import { PreloaderProvider } from "components/PreloaderContext";
 import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
+import { getExpoPushTokenAsync } from "expo-notifications";
 import * as SplashScreen from "expo-splash-screen";
-import * as Updates from "expo-updates";
+import * as ExpoTrackingTransparency from "expo-tracking-transparency";
+import { requestTrackingPermissionsAsync } from "expo-tracking-transparency";
+import { NativeBaseProvider } from "native-base";
 import Navigation from "navigation/";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
-import appsFlyer from "react-native-appsflyer";
-import { OneSignal } from "react-native-onesignal";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { appsFlyerInit } from "services/appsFlyerInit";
+import useConfigStore from "store/useConfigStore";
 
-Sentry.init({
-  dsn: "https://d45f95bfcc3da0435cbdf7bf2ce8e8fc@o4505668978212864.ingest.sentry.io/4506457161072640",
-});
+appsFlyerInit();
 
-appsFlyer.initSdk(
-  {
-    devKey: "My9XkEmCQftu8eU3rRNHnM",
-    isDebug: false,
-    appId: "com.prilka.princesdesert", // for ios app id is necessary
-    onInstallConversionDataListener: true, //Optional
-    onDeepLinkListener: true, //Optional
-    timeToWaitForATTUserAuthorization: 10, //for iOS 14.5
-  },
-  (result) => {
-    console.log("result", result);
-    // Sentry.captureException(`appsFlyer result: ${JSON.stringify(result)}`);
-  },
-  (error) => {
-    console.log("error", error);
-    // Sentry.captureException(`appsFlyer error: ${JSON.stringify(error)}`);
-  }
-);
-
-OneSignal.initialize(Constants.expoConfig.extra.oneSignalAppId);
-
-SplashScreen.preventAutoHideAsync()
-  .then((result) => {
-    if (result) {
-      console.log("SplashScreen was prevented from auto-hiding");
-    } else {
-      console.log("SplashScreen auto-hide is disabled");
-    }
-  })
-  .catch(console.warn);
+SplashScreen.preventAutoHideAsync();
 
 function Root() {
   return <Navigation />;
 }
 
 export default function App() {
-  const eventListener = async (event) => {
-    if (event.type === Updates.UpdateEventType.ERROR) {
-    } else if (event.type === Updates.UpdateEventType.NO_UPDATE_AVAILABLE) {
-    } else if (event.type === Updates.UpdateEventType.UPDATE_AVAILABLE) {
-      // Sentry.captureException(`New update available: ${JSON.stringify(event)}`);
-      await Updates.fetchUpdateAsync();
-      await Updates.reloadAsync();
-    }
-  };
-  Updates.useUpdateEvents(eventListener);
+  const [isConfigLoaded, setIsConfigLoaded] = useState(false);
+  const setConfigStore = useConfigStore(({ setConfigStore }) => setConfigStore);
+
+  // console.log(url);
+
+  // useEffect(() => {
+  //   setTimeout(() => {}, [1000]);
+  // }, [url]);
+
+  // updateAppService();
+
+  useEffect(() => {
+    (async () => {
+      const config = await api.getConfig();
+      //Notifications
+      const { granted } = await Notifications.getPermissionsAsync();
+      if (!granted) {
+        const notificationPermission = await Notifications.requestPermissionsAsync();
+        config.notificationPermission = notificationPermission.granted;
+      }
+      if (granted) {
+        const pushToken = await getExpoPushTokenAsync({
+          projectId: Constants.expoConfig.extra.eas.projectId,
+        });
+        config.pushToken = pushToken.data;
+      }
+      //Tracking Transparency
+      const { status: trackingPermissionsStatus } = await requestTrackingPermissionsAsync();
+      config.trackingTransparencyStatus = trackingPermissionsStatus;
+
+      if (trackingPermissionsStatus === "granted") {
+        config.deviceID = ExpoTrackingTransparency.getAdvertisingId();
+      }
+      await api.savePushToken(config.deviceID || config.pushToken, config.pushToken);
+
+      setConfigStore(config);
+      setIsConfigLoaded(true);
+    })();
+  }, []);
+
+  if (!isConfigLoaded) {
+    return null;
+  }
+
+  SplashScreen.hideAsync();
 
   return (
-    <View style={{ flex: 1 }}>
-      <AssetsContextProvider>
-        <SafeAreaProvider>
+    <NativeBaseProvider>
+      <PreloaderProvider>
+        <View style={{ flex: 1 }}>
           <Root />
-        </SafeAreaProvider>
-      </AssetsContextProvider>
-    </View>
+        </View>
+      </PreloaderProvider>
+    </NativeBaseProvider>
   );
 }
