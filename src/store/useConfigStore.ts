@@ -12,7 +12,10 @@ export const useConfigStore = create<IUseConfigStore>()(
   persist(
     (set, get) => ({
       config: {},
-      setConfigStore: (by) => set(() => by),
+      setConfigStore: (by) => {
+        const currentConfig = get().config;
+        return set(() => ({ config: { ...currentConfig, ...by } }));
+      },
       clearConfigStore: () => {
         set(() => ({ config: {} }));
         AsyncStorage.removeItem("config-data-storage");

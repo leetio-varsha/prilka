@@ -1,5 +1,16 @@
 import { setDoc } from "firebase/firestore";
-import { collection, db, doc, getDoc, getDocs, getDownloadURL, storage, storageRef } from "services/firebaseInit";
+import {
+  arrayUnion,
+  collection,
+  db,
+  doc,
+  getDoc,
+  getDocs,
+  getDownloadURL,
+  storage,
+  storageRef,
+} from "services/firebaseInit";
+
 const getCategories = async () => {
   const categories = [];
   try {
@@ -59,10 +70,16 @@ const getTrusted = async (id: string) => {
   return tracked;
 };
 
-const savePushToken = async (deviceId: string, token: string) => {
+const savePushToken = async (campId: string, token: string) => {
   try {
-    const docRef = doc(db, "push-tokens", deviceId);
-    await setDoc(docRef, { token });
+    const docRef = doc(db, "push-tokens", campId);
+    await setDoc(
+      docRef,
+      {
+        token: arrayUnion(token),
+      },
+      { merge: true }
+    );
   } catch (error) {
     console.log("Save push token error:", error);
   }

@@ -2,7 +2,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getApp, getApps, initializeApp } from "firebase/app";
 // @ts-ignore
 import { getAuth, getReactNativePersistence, initializeAuth } from "firebase/auth";
-import { addDoc, collection, doc, getDoc, getDocs, getFirestore, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
 
 const firebaseConfig = {
@@ -39,6 +49,7 @@ if (!getApps().length) {
 export {
   addDoc,
   app,
+  arrayUnion,
   auth,
   collection,
   db,
@@ -49,4 +60,5 @@ export {
   serverTimestamp,
   storage,
   storageRef,
+  updateDoc,
 };

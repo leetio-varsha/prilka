@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "gamblsuite",
+    "name": "GamblSuite",
     "slug": "gamblsuite",
     "scheme": "gamblsuite",
     "version": "1.0.0",
@@ -25,8 +25,11 @@
       "buildNumber": "1",
       "bundleIdentifier": "com.gambl.suite",
       "config": {
-      "usesNonExemptEncryption": false
-    }
+        "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "NSUserTrackingUsageDescription": "We use your data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this policy."
+      }
     },
     "android": {
       "versionCode": 8,
@@ -62,6 +65,9 @@
             "DEFAULT"
           ]
         }
+      ],
+      "permissions": [
+        "com.google.android.gms.permission.AD_ID"
       ]
     },
     "web": {
@@ -69,7 +75,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "29c74ec1-d054-4eff-8b14-6b31a293020e"
+        "projectId": "21e71949-ceba-482c-9bb1-0ddb6db011c6"
       }
     },
     "owner": "varshavsky.leetio",
@@ -87,7 +93,7 @@
     ],
     "updates": {
       "enabled": true,
-      "url": "https://u.expo.dev/29c74ec1-d054-4eff-8b14-6b31a293020e"
+      "url": "https://u.expo.dev/21e71949-ceba-482c-9bb1-0ddb6db011c6"
     },
     "runtimeVersion": {
       "policy": "sdkVersion"

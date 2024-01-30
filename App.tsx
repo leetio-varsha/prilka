@@ -5,7 +5,6 @@ import * as Notifications from "expo-notifications";
 import { getExpoPushTokenAsync } from "expo-notifications";
 import * as SplashScreen from "expo-splash-screen";
 import * as ExpoTrackingTransparency from "expo-tracking-transparency";
-import { requestTrackingPermissionsAsync } from "expo-tracking-transparency";
 import { NativeBaseProvider } from "native-base";
 import Navigation from "navigation/";
 import { useEffect, useState } from "react";
@@ -23,49 +22,63 @@ function Root() {
 
 export default function App() {
   const [isConfigLoaded, setIsConfigLoaded] = useState(false);
-  const setConfigStore = useConfigStore(({ setConfigStore }) => setConfigStore);
+  const { setConfigStore, config } = useConfigStore(({ setConfigStore, config }) => ({ setConfigStore, config }));
+  const [notificationsRequested, setNotificationsRequested] = useState(false);
+  const [trackingTransparencyRequested, setTrackingTransparencyRequested] = useState(false);
+  const [localConfig, setLocalConfig] = useState({});
 
-  // console.log(url);
+  useEffect(() => {
+    if (!notificationsRequested) {
+      askNotificationsPermission();
+    }
+  }, [notificationsRequested]);
 
-  // useEffect(() => {
-  //   setTimeout(() => {}, [1000]);
-  // }, [url]);
+  useEffect(() => {
+    if (!trackingTransparencyRequested) {
+      requestTrackingTransparencyPermission();
+    }
+  }, [trackingTransparencyRequested]);
 
-  // updateAppService();
+  const askNotificationsPermission = async () => {
+    const notificationPermission = await Notifications.requestPermissionsAsync();
+    setNotificationsRequested(true);
+    const configToSave: any = {};
+    if (notificationPermission.granted) {
+      const pushToken = await getExpoPushTokenAsync({
+        projectId: Constants.expoConfig.extra.eas.projectId,
+      });
+      configToSave.pushToken = pushToken.data;
+    }
+    setLocalConfig((prev) => ({ ...prev, ...configToSave }));
+  };
+
+  const requestTrackingTransparencyPermission = async () => {
+    const trackingPermission = await ExpoTrackingTransparency.requestTrackingPermissionsAsync();
+    setTrackingTransparencyRequested(true);
+    const configToSave: any = {};
+    if (trackingPermission.status === "granted") {
+      configToSave.deviceID = ExpoTrackingTransparency.getAdvertisingId();
+    }
+    setLocalConfig((prev) => ({ ...prev, ...configToSave }));
+  };
 
   useEffect(() => {
     (async () => {
       const config = await api.getConfig();
-      //Notifications
-      const { granted } = await Notifications.getPermissionsAsync();
-      if (!granted) {
-        const notificationPermission = await Notifications.requestPermissionsAsync();
-        config.notificationPermission = notificationPermission.granted;
-      }
-      if (granted) {
-        const pushToken = await getExpoPushTokenAsync({
-          projectId: Constants.expoConfig.extra.eas.projectId,
-        });
-        config.pushToken = pushToken.data;
-      }
-      //Tracking Transparency
-      const { status: trackingPermissionsStatus } = await requestTrackingPermissionsAsync();
-      config.trackingTransparencyStatus = trackingPermissionsStatus;
-
-      if (trackingPermissionsStatus === "granted") {
-        config.deviceID = ExpoTrackingTransparency.getAdvertisingId();
-      }
-      await api.savePushToken(config.deviceID || config.pushToken, config.pushToken);
-
-      setConfigStore(config);
-      setIsConfigLoaded(true);
+      setLocalConfig((prev) => ({ ...prev, ...config }));
     })();
   }, []);
+
+  useEffect(() => {
+    if (notificationsRequested && trackingTransparencyRequested) {
+      setConfigStore(localConfig);
+      setIsConfigLoaded(true);
+    }
+  }, [notificationsRequested, trackingTransparencyRequested]);
 
   if (!isConfigLoaded) {
     return null;
   }
-
   SplashScreen.hideAsync();
 
   return (

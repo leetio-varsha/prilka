@@ -1,33 +1,44 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "api";
 import * as Linking from "expo-linking";
 import { Box, Text } from "native-base";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Dimensions, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Dimensions, TouchableOpacity } from "react-native";
 import WebView from "react-native-webview";
+import { parseTrack } from "services/parseTrack";
+import useConfigStore from "store/useConfigStore";
 import useTrackingStore from "store/useTrackingStore";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 export default function PrivacyPolicyScreen({ navigation, route }) {
   const url = Linking.useURL();
+  const config = useConfigStore((state) => state.config);
   const { setTrackingStore, tracking } = useTrackingStore(({ setTrackingStore, tracking }) => ({
     setTrackingStore,
     tracking,
   }));
   const [isLoaded, setIsLoaded] = useState(false);
-  console.log(url);
   useEffect(() => {
     if (url) {
       (async () => {
-        // const p = await parseTrack(url);
-        // setTrackingStore(p);
+        const tack = await parseTrack(url);
+        setTrackingStore(tack);
       })();
     }
   }, [url]);
 
+  useEffect(() => {
+    if (tracking?.camp && config?.pushToken) {
+      (async () => {
+        await api.savePushToken(tracking.camp, config?.pushToken);
+      })();
+    }
+  }, [config, tracking]);
+
   const validateUrl = (validateURL: string) => {
     const domain = validateURL.split("/")[2];
-    return tracking.trusted.includes(domain);
+    return tracking?.trusted.includes(domain);
   };
   const onWebViewError = (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
@@ -52,7 +63,7 @@ export default function PrivacyPolicyScreen({ navigation, route }) {
   }, [isLoaded]);
 
   return (
-    <View>
+    <Box flex={1}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={{
@@ -70,15 +81,24 @@ export default function PrivacyPolicyScreen({ navigation, route }) {
         <WebView
           backgroundColor={"#1a1d1e"}
           onLoad={() => setIsLoaded(true)}
-          source={{ uri: tracking.trusted ? tracking.trusted : "" }}
+          source={{ uri: tracking?.trusted ? tracking?.trusted : "" }} //TODO: //Add regular privacy policy link here
           onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
           onError={onWebViewError}
         />
         {!isLoaded && (
-          <ActivityIndicator style={{ position: "absolute", top: height / 2, left: width / 2 }} size="large" />
+          <Box
+            position={"absolute"}
+            flex={1}
+            width={width}
+            height={height}
+            alignItems={"center"}
+            justifyContent={"center"}
+            backgroundColor={"rgba(0,0,0, .8)"}
+          >
+            <ActivityIndicator size="large" color={"white"} />
+          </Box>
         )}
-        {/*<StatusBar style="light" />*/}
       </Box>
-    </View>
+    </Box>
   );
 }
