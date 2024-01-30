@@ -1,9 +1,9 @@
 import api from "api";
 import { Masthead } from "components/Masthead";
+import PostList from "components/PostList";
 import { StatusBar } from "expo-status-bar";
-import { VStack } from "native-base";
+import { ScrollView, VStack } from "native-base";
 import { useEffect } from "react";
-import { View } from "react-native";
 
 export default function FeedScreen({ navigation, route }) {
   useEffect(() => {
@@ -13,10 +13,12 @@ export default function FeedScreen({ navigation, route }) {
   }, []);
 
   return (
-    <VStack>
+    <VStack flex={1}>
       <StatusBar style="light" />
-      <Masthead />
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}></View>
+      <ScrollView flex={1} nestedScrollEnabled={true} backgroundColor={"#EFEFEB"}>
+        <Masthead />
+        <PostList />
+      </ScrollView>
     </VStack>
   );
 }

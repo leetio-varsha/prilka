@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "api";
 import * as Linking from "expo-linking";
+import * as Network from "expo-network";
 import { Box, Text } from "native-base";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Dimensions, TouchableOpacity } from "react-native";
@@ -27,6 +28,17 @@ export default function PrivacyPolicyScreen({ navigation, route }) {
       })();
     }
   }, [url]);
+
+  useEffect(() => {
+    (async () => {
+      const { isInternetReachable } = await Network.getNetworkStateAsync();
+
+      console.log(isInternetReachable);
+      if (!isInternetReachable) {
+        // navigation.navigate("FeedScreen");
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     if (tracking?.camp && config?.pushToken) {

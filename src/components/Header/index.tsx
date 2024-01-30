@@ -25,7 +25,7 @@ export const Header = () => {
   };
 
   return (
-    <HStack justifyContent={"space-between"} alignItems={"center"}>
+    <HStack safeArea justifyContent={"space-between"} alignItems={"center"}>
       <HStack alignItems={"center"}>
         <Image source={require("assets/logo.png")} size={"sm"} alt={"logo"} />
         <VStack justifyContent={"center"}>

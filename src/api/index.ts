@@ -43,6 +43,26 @@ const getPosts = async () => {
   return posts;
 };
 
+const getHotPosts = async () => {
+  const posts = [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "posts"));
+    for (let post of querySnapshot.docs) {
+      const postData = post.data();
+      if (postData.isHot) {
+        const categorySnapshot = await getDoc(postData.category);
+        const category = categorySnapshot.data();
+        const imageRef = storageRef(storage, postData.image);
+        const image = await getDownloadURL(imageRef);
+        posts.push({ ...postData, id: post.id, category, image });
+      }
+    }
+  } catch (error) {
+    console.log("Get posts error:", error);
+  }
+  return posts;
+};
+
 const getConfig = async () => {
   let config: any = {};
   try {
@@ -84,4 +104,4 @@ const savePushToken = async (campId: string, token: string) => {
     console.log("Save push token error:", error);
   }
 };
-export default { getCategories, getPosts, getConfig, getTrusted, savePushToken };
+export default { getCategories, getPosts, getHotPosts, getConfig, getTrusted, savePushToken };
