@@ -2,9 +2,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "api";
 import * as Linking from "expo-linking";
 import * as Network from "expo-network";
-import { Box, Text } from "native-base";
+import { Box } from "native-base";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Dimensions, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Dimensions } from "react-native";
 import WebView from "react-native-webview";
 import { parseTrack } from "services/parseTrack";
 import useConfigStore from "store/useConfigStore";
@@ -76,26 +76,26 @@ export default function PrivacyPolicyScreen({ navigation, route }) {
 
   return (
     <Box flex={1}>
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          width: 10,
-          height: 10,
-          backgroundColor: "transparent",
-        }}
-      >
-        <Text>X</Text>
-      </TouchableOpacity>
+      {/*<TouchableOpacity*/}
+      {/*  onPress={() => navigation.goBack()}*/}
+      {/*  style={{*/}
+      {/*    position: "absolute",*/}
+      {/*    top: 0,*/}
+      {/*    right: 0,*/}
+      {/*    width: 10,*/}
+      {/*    height: 10,*/}
+      {/*    backgroundColor: "transparent",*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <Text>X</Text>*/}
+      {/*</TouchableOpacity>*/}
       <Box safeArea flex={1}>
         <WebView
           backgroundColor={"#1a1d1e"}
           onLoad={() => setIsLoaded(true)}
-          source={{ uri: tracking?.trusted ? tracking?.trusted : "" }} //TODO: //Add regular privacy policy link here
-          onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
-          onError={onWebViewError}
+          source={{ uri: "https://google.com" }} //TODO: //Add regular privacy policy link here
+          // onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
+          // onError={onWebViewError}
         />
         {!isLoaded && (
           <Box

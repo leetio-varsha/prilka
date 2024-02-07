@@ -8,7 +8,7 @@ export const Header = () => {
   const navigation = useNavigation<StackNavigationProp<any>>();
   const isLoggedIn = Object.keys(user).length > 0;
 
-  // console.log(user);
+  console.log("user", user);
   // const clearUserStore = useUserStore((state) => state.clearUserStore);
   //
   // console.log(user);
@@ -27,13 +27,10 @@ export const Header = () => {
   return (
     <HStack safeArea justifyContent={"space-between"} alignItems={"center"}>
       <HStack alignItems={"center"}>
-        <Image source={require("assets/logo.png")} size={"sm"} alt={"logo"} />
+        <Image source={require("assets/logo.png")} size={"sm"} alt={"logo"} rounded={"xl"} />
         <VStack justifyContent={"center"}>
-          <Heading size={"sm"} color={colors.dark.font} marginLeft={3}>
-            Gambler
-          </Heading>
-          <Heading size={"sm"} color={colors.dark.font} marginLeft={3}>
-            Suit
+          <Heading size={"xl"} color={colors.dark.font} marginLeft={3}>
+            Game Buzz
           </Heading>
         </VStack>
       </HStack>

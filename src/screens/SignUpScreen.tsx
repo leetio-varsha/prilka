@@ -3,7 +3,7 @@ import { usePreloader } from "components/PreloaderContext";
 import LoadingIndicator from "components/PreloaderContext/LoadingIndicator";
 import Constants from "expo-constants";
 import { getExpoPushTokenAsync } from "expo-notifications";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { updateProfile } from "firebase/auth";
 import {
   Alert,
   Box,
@@ -20,11 +20,10 @@ import {
   VStack,
 } from "native-base";
 import { useState } from "react";
-import { auth, db } from "services/firebaseInit";
 import useUserStore from "store/useUserStore";
 import { colors } from "styles/common";
 
-import { doc, setDoc } from "firebase/firestore";
+import api from "api";
 
 export default function SignUpScreen({ navigation, route }) {
   const { setLoading } = usePreloader();
@@ -38,26 +37,20 @@ export default function SignUpScreen({ navigation, route }) {
   const handleSignUp = async () => {
     setLoading(true);
     try {
-      const { user } = await createUserWithEmailAndPassword(auth, email.trim(), password);
+      const user = await api.createUser(email.trim(), password);
       if (user) {
         await updateProfile(user, { displayName });
         const pushToken = await getExpoPushTokenAsync({
           projectId: Constants.expoConfig.extra.eas.projectId,
         });
-        // Store the push token in your server
-        updateUserStore({
-          user: {
-            providedData: user?.providerData,
-            pushToken: pushToken.data,
-          },
-        });
-
-        // Save user data to Firestore
-        await setDoc(doc(db, "users", user.uid), {
-          displayName: displayName,
+        const userRecord = await api.createUserOrUpdate(user.uid, {
+          displayName,
+          email: user.email,
           uid: user.uid,
           pushToken: pushToken.data,
         });
+        // Store the push token in your server
+        updateUserStore(userRecord);
 
         navigation.navigate("FeedScreen");
       }
@@ -129,7 +122,7 @@ export default function SignUpScreen({ navigation, route }) {
                   autoCapitalize={"none"}
                 />
               </FormControl>
-              <Button onPress={handleSignUp} mt="5">
+              <Button onPress={handleSignUp} colorScheme="blueGray" mt="5">
                 Sign Up
               </Button>
             </FormControl>

@@ -1,15 +1,22 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import firebase from "firebase/compat";
 import { setDoc } from "firebase/firestore";
 import {
+  addDoc,
   arrayUnion,
+  auth,
   collection,
   db,
   doc,
   getDoc,
   getDocs,
   getDownloadURL,
+  query,
   storage,
   storageRef,
+  where,
 } from "services/firebaseInit";
+import Timestamp = firebase.firestore.Timestamp;
 
 const getCategories = async () => {
   const categories = [];
@@ -30,12 +37,13 @@ const getPosts = async () => {
     const querySnapshot = await getDocs(collection(db, "posts"));
     for (let post of querySnapshot.docs) {
       const postData = post.data();
-      const categorySnapshot = await getDoc(postData.category);
-      const category = categorySnapshot.data();
-      const imageRef = storageRef(storage, postData.image);
-      const image = await getDownloadURL(imageRef);
-      posts.push({ ...postData, id: post.id, category, image });
-      return posts;
+      if (!postData.isHot) {
+        const categorySnapshot = await getDoc(postData.category);
+        const category = categorySnapshot.data();
+        const imageRef = storageRef(storage, postData.image);
+        const image = await getDownloadURL(imageRef);
+        posts.push({ ...postData, id: post.id, category, image });
+      }
     }
   } catch (error) {
     console.log("Get posts error:", error);
@@ -104,4 +112,97 @@ const savePushToken = async (campId: string, token: string) => {
     console.log("Save push token error:", error);
   }
 };
-export default { getCategories, getPosts, getHotPosts, getConfig, getTrusted, savePushToken };
+
+const getCommentsByPostId = async (postId: string) => {
+  const comments = [];
+  try {
+    const q = query(collection(db, "comments"), where("postId", "==", postId));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const commentData = doc.data();
+      comments.push({
+        id: doc.id,
+        created_at: commentData.created_at.toDate(),
+        comment: commentData.comment,
+        userDisplayName: commentData.userDisplayName,
+      });
+    });
+  } catch (error) {
+    console.log("Get comments error:", error);
+  }
+  return comments;
+};
+
+const saveComment = async (postId: string, comment: string, userDisplayName: string) => {
+  try {
+    const userId = auth.currentUser?.uid; // get the ID of the currently authenticated user
+    if (!userId) {
+      throw new Error("User is not authenticated");
+    }
+    const commentData = {
+      postId,
+      comment,
+      userDisplayName,
+      userId, // include the userId in the document data
+      created_at: Timestamp.now(),
+    };
+    await addDoc(collection(db, "comments"), commentData);
+    return commentData;
+  } catch (error) {
+    console.log("Save comment error:", error);
+  }
+};
+
+const createUser = async (email: string, password: string) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
+  } catch (error) {
+    console.log("Error creating user:", error);
+  }
+};
+
+const createUserOrUpdate = async (uid: string, data: any) => {
+  let userData = null;
+  try {
+    const userRef = doc(db, "users", uid);
+    const docSnapshot = await getDoc(userRef);
+    if (docSnapshot.exists()) {
+      await setDoc(userRef, data, { merge: true });
+      userData = { uid, ...data };
+    } else {
+      await setDoc(userRef, data);
+      userData = { uid, ...data };
+    }
+  } catch (error) {
+    console.log("Error creating or updating user:", error);
+  }
+  return userData;
+};
+const getUser = async (uid: string) => {
+  let userData = null;
+  try {
+    const docRef = doc(db, "users", uid);
+    const docSnapshot = await getDoc(docRef);
+    if (docSnapshot.exists()) {
+      userData = docSnapshot.data();
+    }
+  } catch (error) {
+    console.log("Error getting user:", error);
+  }
+  return userData;
+};
+
+export default {
+  getCategories,
+  saveComment,
+  getPosts,
+  getHotPosts,
+  getConfig,
+  getTrusted,
+  savePushToken,
+  getCommentsByPostId,
+  createUser,
+  createUserOrUpdate,
+  getUser,
+};

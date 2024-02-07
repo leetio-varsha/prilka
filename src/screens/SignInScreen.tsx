@@ -1,4 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
+import api from "api";
 import { usePreloader } from "components/PreloaderContext";
 import LoadingIndicator from "components/PreloaderContext/LoadingIndicator";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -37,11 +38,9 @@ export default function SignInScreen({ navigation, route }) {
     setLoading(true);
     try {
       const { user } = await signInWithEmailAndPassword(auth, email.trim(), password);
-      console.log(user);
+      const userRecord = await api.getUser(user.uid);
       updateUserStore({
-        user: {
-          providedData: user?.providerData,
-        },
+        user: userRecord,
       });
       navigation.navigate("FeedScreen");
     } catch (error) {

@@ -4,16 +4,22 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as Linking from "expo-linking";
 import { useEffect, useState } from "react";
 import { Text } from "react-native";
+import CommentsScreen from "screens/CommentsScreen";
 import FeedScreen from "screens/FeedScreen";
+import PostScreen from "screens/PostScreen";
 import PrivacyPolicyScreen from "screens/PrivacyPolicyScreen";
+import ProfileScreen from "screens/ProfileScreen";
 import SignInScreen from "screens/SignInScreen";
 import SignUpScreen from "screens/SignUpScreen";
 const prefix = Linking.createURL("/");
 
 const Screens = [
   { name: "FeedScreen", component: FeedScreen, screenOptions: { headerShown: false } },
+  { name: "PostDetailScreen", component: PostScreen, screenOptions: { presentation: "modal", headerShown: false } },
+  { name: "CommentsScreen", component: CommentsScreen, screenOptions: { presentation: "modal", headerShown: false } },
   { name: "SignInScreen", component: SignInScreen, screenOptions: { presentation: "modal", headerShown: false } },
   { name: "SignUpScreen", component: SignUpScreen, screenOptions: { presentation: "modal", headerShown: false } },
+  { name: "ProfileScreen", component: ProfileScreen, screenOptions: { presentation: "modal", headerShown: false } },
   // { name: "ManageScreen", component: ManageScreen },
   // { name: "HomeScreen", component: HomeScreen },
   // { name: "GameLobbyScreen", component: GameLobbyScreen },
@@ -27,11 +33,6 @@ const config = {
     SignInScreen: "signin",
     SignUpScreen: "signup",
     PrivacyPolicyScreen: "privacy/:dpl/:tracking",
-    // ManageScreen: "manage",
-    // HomeScreen: "home",
-    // GameLobbyScreen: "game-lobby",
-    // GameScreen: "game",
-    // PrivacyPolicyScreen: "privacy-policy",
   },
 };
 
@@ -48,7 +49,7 @@ function Navigation() {
   const [initialRouteName, setInitialRouteName] = useState("");
   // ready
   const linking = {
-    prefixes: [prefix, ""], // TODO: add appsflyer domain here
+    prefixes: [prefix, "https://cloak-prill.netlify.app"], // TODO: add appsflyer domain here
     config,
   };
 

@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "GamblSuite",
-    "slug": "gamblsuite",
-    "scheme": "gamblsuite",
+    "name": "Game Buzz",
+    "slug": "gamebuzz",
+    "scheme": "gamebuzz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
-    "backgroundColor": "#EFEFEB",
+    "backgroundColor": "#1a1d1e",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
@@ -20,10 +20,10 @@
     "ios": {
       "supportsTablet": true,
       "associatedDomains": [
-        "applinks:gamblsuite.onelink.me"
+        "applinks:cloak-prill.netlify.app"
       ],
       "buildNumber": "1",
-      "bundleIdentifier": "com.gambl.suite",
+      "bundleIdentifier": "com.prilka.gamebuzz",
       "config": {
         "usesNonExemptEncryption": false
       },
@@ -32,8 +32,8 @@
       }
     },
     "android": {
-      "versionCode": 8,
-      "package": "com.gambl.suite",
+      "versionCode": 1,
+      "package": "com.prilka.gamebuzz",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -44,8 +44,8 @@
           "data": [
             {
               "scheme": "https",
-              "host": "gamblsuite.onelink.me",
-              "pathPrefix": "/RGIK"
+              "host": "cloak-prill.netlify.app",
+              "pathPrefix": "/gamebuzz"
             }
           ],
           "category": [
@@ -57,7 +57,7 @@
           "action": "VIEW",
           "data": [
             {
-              "scheme": "gamblsuite"
+              "scheme": "gamebuzz"
             }
           ],
           "category": [
@@ -75,8 +75,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "21e71949-ceba-482c-9bb1-0ddb6db011c6"
-      }
+        "projectId": "0e0f65cc-d883-47bc-a395-480ca4980b15"
+      },
+       "oneSignalAppId": "d145c760-5d86-42af-bd92-16511627c978"
     },
     "owner": "varshavsky.leetio",
     "plugins": [
@@ -89,11 +90,17 @@
         {
           "userTrackingPermission": "We use your data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this policy."
         }
+      ],
+     [
+      "onesignal-expo-plugin",
+        {
+          "mode": "development"
+        }
       ]
     ],
     "updates": {
       "enabled": true,
-      "url": "https://u.expo.dev/21e71949-ceba-482c-9bb1-0ddb6db011c6"
+      "url": "https://u.expo.dev/0e0f65cc-d883-47bc-a395-480ca4980b15"
     },
     "runtimeVersion": {
       "policy": "sdkVersion"

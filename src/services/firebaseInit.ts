@@ -10,8 +10,10 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  query,
   serverTimestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
 
@@ -57,8 +59,10 @@ export {
   getDoc,
   getDocs,
   getDownloadURL,
+  query,
   serverTimestamp,
   storage,
   storageRef,
   updateDoc,
+  where,
 };
