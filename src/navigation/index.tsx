@@ -1,8 +1,7 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as Linking from "expo-linking";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Text } from "react-native";
 import CommentsScreen from "screens/CommentsScreen";
 import FeedScreen from "screens/FeedScreen";
@@ -45,20 +44,9 @@ function Navigation() {
   const [initialRouteName, setInitialRouteName] = useState("");
   // ready
   const linking = {
-    prefixes: [prefix, "https://cloak-prill.netlify.app"], // TODO: add appsflyer domain here
+    prefixes: [prefix], // TODO: add appsflyer domain here
     config,
   };
-
-  useEffect(() => {
-    (async () => {
-      const initial = await AsyncStorage.getItem("lastVisitedScreen");
-      setInitialRouteName(initial || "FeedScreen");
-    })();
-  }, []);
-
-  // console.log(initialRouteName);
-  //
-  // if (!initialRouteName) return <Text>Loading...</Text>;
 
   return (
     <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>} theme={themeColor}>

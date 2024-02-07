@@ -12,6 +12,7 @@ import {
   FormControl,
   Heading,
   Input,
+  Spacer,
   Text,
   VStack,
 } from "native-base";
@@ -101,7 +102,7 @@ export default function ProfileScreen({ navigation, route }) {
               <Input value={displayName} onChangeText={setDisplayName} />
             </FormControl>
             <FormControl>
-              <Button onPress={handleSignUp} colorScheme="blueGray" mt="5">
+              <Button onPress={handleSignUp} colorScheme="emerald" mt="5">
                 Update
               </Button>
             </FormControl>
@@ -110,7 +111,22 @@ export default function ProfileScreen({ navigation, route }) {
                 Log out
               </Button>
             </FormControl>
+            <Spacer />
+            <Divider bg="blueGray.400" thickness="1" orientation="horizontal" />
+            <Spacer />
             <DeleteAlert handleDeleteUser={handleDeleteUser} />
+            <FormControl>
+              <Button
+                onPress={() => {
+                  navigation.goBack(null);
+                  navigation.push("PrivacyPolicyScreen");
+                }}
+                colorScheme="blueGray"
+                mt="2"
+              >
+                Privacy Policy
+              </Button>
+            </FormControl>
           </VStack>
         </Box>
       </Center>
