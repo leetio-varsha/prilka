@@ -1,24 +1,24 @@
 import { CommentsFab } from "components/CommentsFab";
 import { format } from "date-fns";
-import { Badge, Box, Heading, HStack, Image, ScrollView, Text, VStack } from "native-base";
+import { Badge, Box, Button, Heading, HStack, Image, ScrollView, Text, VStack } from "native-base";
 import useUserStore from "store/useUserStore";
 import { colors } from "styles/common";
 
 export default function PostScreen({ navigation, route }) {
   const user = useUserStore((state) => state.user);
   const isLoggedIn = Object.keys(user).length > 0;
-  // if (!isLoggedIn) {
-  //   return (
-  //     <Box background={[colors.light.background]} flex={1} p={10} alignItems={"center"} justifyContent={"center"}>
-  //       <Heading textAlign={"center"} mb={10}>
-  //         You are not logged in. Please sign in to continue.
-  //       </Heading>
-  //       <Button width={200} colorScheme="blueGray" size={"lg"} onPress={() => navigation.replace("SignInScreen")}>
-  //         Sign In
-  //       </Button>
-  //     </Box>
-  //   );
-  // }
+  if (!isLoggedIn) {
+    return (
+      <Box background={[colors.light.background]} flex={1} p={10} alignItems={"center"} justifyContent={"center"}>
+        <Heading textAlign={"center"} mb={10}>
+          You are not logged in. Please sign in to continue.
+        </Heading>
+        <Button width={200} colorScheme="blueGray" size={"lg"} onPress={() => navigation.replace("SignInScreen")}>
+          Sign In
+        </Button>
+      </Box>
+    );
+  }
   const { params = {} } = route;
   const { post } = params;
 

@@ -9,7 +9,7 @@ import * as Updates from "expo-updates";
 import { NativeBaseProvider } from "native-base";
 import Navigation from "navigation/";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import appsFlyer from "react-native-appsflyer";
 import { LogLevel, OneSignal } from "react-native-onesignal";
 import useConfigStore from "store/useConfigStore";
@@ -41,15 +41,15 @@ export default function App() {
   const [isAppsFlyerInitialized, setIsAppsFlyerInitialized] = useState(false);
 
   useEffect(() => {
-    console.log("isUpdateAvailable", isUpdateAvailable);
     if (isUpdateAvailable) {
+      alert("Update available");
       Updates.fetchUpdateAsync();
     }
   }, [isUpdateAvailable]);
 
   useEffect(() => {
-    console.log("isUpdatePending", isUpdatePending);
     if (isUpdatePending) {
+      alert("isUpdatePending");
       // Update has been successfully downloaded,
       // so reload with the new update bundle
       Updates.reloadAsync();
@@ -69,9 +69,9 @@ export default function App() {
   }
 
   useEffect(() => {
-    // if (Platform.OS === "ios") {
-    //   appsFlyerOptions.appId = ""; //TODO: add your iOS app id
-    // }
+    if (Platform.OS === "ios") {
+      appsFlyerOptions.appId = "6477542235"; //TODO: add your iOS app id
+    }
 
     void initAppsFlyer(appsFlyerOptions);
   }, []);

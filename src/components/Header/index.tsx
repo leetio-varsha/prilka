@@ -21,7 +21,7 @@ export const Header = () => {
     navigation.push("SignInScreen");
   };
   const toProfileAction = () => {
-    navigation.push("PrivacyPolicyScreen");
+    navigation.push("ProfileScreen");
   };
 
   return (
