@@ -8,7 +8,7 @@ export const Header = () => {
   const navigation = useNavigation<StackNavigationProp<any>>();
   const isLoggedIn = Object.keys(user).length > 0;
 
-  console.log("user", user);
+  // console.log("user", user);
   // const clearUserStore = useUserStore((state) => state.clearUserStore);
   //
   // console.log(user);

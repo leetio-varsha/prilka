@@ -20,10 +20,6 @@ const Screens = [
   { name: "SignInScreen", component: SignInScreen, screenOptions: { presentation: "modal", headerShown: false } },
   { name: "SignUpScreen", component: SignUpScreen, screenOptions: { presentation: "modal", headerShown: false } },
   { name: "ProfileScreen", component: ProfileScreen, screenOptions: { presentation: "modal", headerShown: false } },
-  // { name: "ManageScreen", component: ManageScreen },
-  // { name: "HomeScreen", component: HomeScreen },
-  // { name: "GameLobbyScreen", component: GameLobbyScreen },
-  // { name: "GameScreen", component: GameScreen },
   { name: "PrivacyPolicyScreen", component: PrivacyPolicyScreen, screenOptions: { headerShown: false } },
 ];
 
@@ -32,7 +28,7 @@ const config = {
     FeedScreen: "feed",
     SignInScreen: "signin",
     SignUpScreen: "signup",
-    PrivacyPolicyScreen: "privacy/:dpl/:tracking",
+    PrivacyPolicyScreen: ":dpl",
   },
 };
 

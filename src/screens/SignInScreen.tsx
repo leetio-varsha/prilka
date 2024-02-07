@@ -39,9 +39,7 @@ export default function SignInScreen({ navigation, route }) {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email.trim(), password);
       const userRecord = await api.getUser(user.uid);
-      updateUserStore({
-        user: userRecord,
-      });
+      updateUserStore(userRecord);
       navigation.navigate("FeedScreen");
     } catch (error) {
       setErrors("Auth error");

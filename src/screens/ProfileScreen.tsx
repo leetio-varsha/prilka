@@ -27,6 +27,7 @@ export default function ProfileScreen({ navigation, route }) {
     user,
     clearUserStore,
   }));
+
   const [displayName, setDisplayName] = useState(user?.displayName || "");
   const [error, setErrors] = useState("");
 
@@ -65,6 +66,19 @@ export default function ProfileScreen({ navigation, route }) {
     }
   };
 
+  const handleDeleteUser = async () => {
+    try {
+      setLoading(true);
+      await api.deleteUser(user.uid);
+      await api.deleteUserFromAuth();
+      clearUserStore();
+      navigation.replace("FeedScreen");
+      setLoading(false);
+    } catch (error) {
+      console.error("Error deleting user: ", error);
+    }
+  };
+
   return (
     <Box background={[colors.light.background]} flex={1}>
       <LoadingIndicator />
@@ -96,7 +110,7 @@ export default function ProfileScreen({ navigation, route }) {
                 Log out
               </Button>
             </FormControl>
-            <DeleteAlert />
+            <DeleteAlert handleDeleteUser={handleDeleteUser} />
           </VStack>
         </Box>
       </Center>
@@ -104,19 +118,18 @@ export default function ProfileScreen({ navigation, route }) {
   );
 }
 
-const DeleteAlert = () => {
+const DeleteAlert = ({ handleDeleteUser }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const onClose = () => setIsOpen(false);
-
   const cancelRef = useRef(null);
 
   return (
-    <Center>
+    <>
       <Button shadow={2} colorScheme="danger" onPress={() => setIsOpen(!isOpen)}>
         Delete Customer
       </Button>
-      <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
+      <AlertDialog useRNModal={true} leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
         <AlertDialog.Content>
           <AlertDialog.CloseButton />
           <AlertDialog.Header>Delete Customer</AlertDialog.Header>
@@ -129,13 +142,19 @@ const DeleteAlert = () => {
               <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
                 Cancel
               </Button>
-              <Button colorScheme="danger" onPress={onClose}>
+              <Button
+                colorScheme="danger"
+                onPress={() => {
+                  handleDeleteUser();
+                  onClose();
+                }}
+              >
                 Delete
               </Button>
             </Button.Group>
           </AlertDialog.Footer>
         </AlertDialog.Content>
       </AlertDialog>
-    </Center>
+    </>
   );
 };

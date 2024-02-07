@@ -7,6 +7,7 @@ import {
   auth,
   collection,
   db,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -193,6 +194,25 @@ const getUser = async (uid: string) => {
   return userData;
 };
 
+const deleteUser = async (uid: string) => {
+  try {
+    const userRef = doc(db, "users", uid);
+    await deleteDoc(userRef);
+  } catch (error) {
+    console.log("Error deleting user:", error);
+  }
+};
+
+const deleteUserFromAuth = async () => {
+  try {
+    if (auth.currentUser) {
+      await auth.currentUser.delete();
+    }
+  } catch (error) {
+    console.log("Error deleting user from Firebase Auth:", error);
+  }
+};
+
 export default {
   getCategories,
   saveComment,
@@ -205,4 +225,6 @@ export default {
   createUser,
   createUserOrUpdate,
   getUser,
+  deleteUser,
+  deleteUserFromAuth,
 };

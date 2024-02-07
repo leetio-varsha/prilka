@@ -1,6 +1,8 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "api";
 import { PreloaderProvider } from "components/PreloaderContext";
 import Constants from "expo-constants";
+import * as Linking from "expo-linking";
 import * as Notifications from "expo-notifications";
 import { getExpoPushTokenAsync } from "expo-notifications";
 import * as SplashScreen from "expo-splash-screen";
@@ -20,7 +22,7 @@ OneSignal.initialize(Constants.expoConfig.extra.oneSignalAppId);
 const appsFlyerOptions: any = {
   devKey: "My9XkEmCQftu8eU3rRNHnM",
   isDebug: true,
-  onInstallConversionDataListener: true, //Optional
+  onInstallConversionDataListener: false, //Optional
   timeToWaitForATTUserAuthorization: 10, //for iOS 14.5
 };
 
@@ -39,19 +41,17 @@ export default function App() {
   const [trackingTransparencyRequested, setTrackingTransparencyRequested] = useState(false);
   const [localConfig, setLocalConfig] = useState({});
   const [isAppsFlyerInitialized, setIsAppsFlyerInitialized] = useState(false);
+  const [linkingChecked, setLinkingChecked] = useState(false);
+  const [dpl, setDpl] = useState("");
 
   useEffect(() => {
     if (isUpdateAvailable) {
-      alert("Update available");
       Updates.fetchUpdateAsync();
     }
   }, [isUpdateAvailable]);
 
   useEffect(() => {
     if (isUpdatePending) {
-      alert("isUpdatePending");
-      // Update has been successfully downloaded,
-      // so reload with the new update bundle
       Updates.reloadAsync();
     }
   }, [isUpdatePending]);
@@ -76,16 +76,16 @@ export default function App() {
     void initAppsFlyer(appsFlyerOptions);
   }, []);
 
-  useEffect(() => {
-    appsFlyer.onInstallConversionData((data) => {
-      console.log("onInstallConversionData", data);
-    });
-
-    appsFlyer.onAppOpenAttribution((data) => {
-      console.log(data);
-      console.log("onAppOpenAttribution", data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   appsFlyer.onInstallConversionData((data) => {
+  //     console.log("onInstallConversionData", data);
+  //   });
+  //
+  //   appsFlyer.onAppOpenAttribution((data) => {
+  //     console.log(data);
+  //     console.log("onAppOpenAttribution", data);
+  //   });
+  // }, []);
   /*END Appsflyer*/
 
   useEffect(() => {
@@ -100,6 +100,9 @@ export default function App() {
     }
   }, [trackingTransparencyRequested]);
 
+  /*
+   * Start Permissions
+   * */
   const askNotificationsPermission = async () => {
     const notificationPermission = await Notifications.requestPermissionsAsync();
     setNotificationsRequested(true);
@@ -122,6 +125,9 @@ export default function App() {
     }
     setLocalConfig((prev) => ({ ...prev, ...configToSave }));
   };
+  /*
+   * End Permissions
+   * */
 
   useEffect(() => {
     (async () => {
@@ -131,17 +137,45 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (notificationsRequested && trackingTransparencyRequested) {
+    if (notificationsRequested && trackingTransparencyRequested && isAppsFlyerInitialized && linkingChecked) {
       setConfigStore(localConfig);
       setIsConfigLoaded(true);
     }
-  }, [notificationsRequested, trackingTransparencyRequested]);
+  }, [notificationsRequested, trackingTransparencyRequested, linkingChecked, isAppsFlyerInitialized]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const savedDpl = await AsyncStorage.getItem("dpl");
+        const supported = await Linking.canOpenURL(savedDpl);
+        if (supported) {
+          setDpl(savedDpl);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLinkingChecked(true);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (isConfigLoaded) {
+        if (dpl) {
+          await Linking.openURL(dpl);
+        }
+      }
+
+      setTimeout(() => {
+        SplashScreen.hideAsync();
+      }, 1000);
+    })();
+  }, [isConfigLoaded, dpl]);
 
   if (!isConfigLoaded) {
     return null;
   }
-
-  SplashScreen.hideAsync();
 
   return (
     <NativeBaseProvider>
