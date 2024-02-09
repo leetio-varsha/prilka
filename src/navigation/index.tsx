@@ -51,7 +51,7 @@ function Navigation() {
   const [initialRouteName, setInitialRouteName] = useState("");
   // ready
   const linking = {
-    prefixes: [prefix, "https://cloak-prill.netlify.app"], // TODO: add appsflyer domain here
+    prefixes: [prefix, "https://game-buzz.onelink.me"], // TODO: add appsflyer domain here
     config,
   };
 
