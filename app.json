@@ -20,7 +20,7 @@
     "ios": {
       "supportsTablet": true,
       "associatedDomains": [
-        "applinks:cloak-prill.netlify.app"
+        "applinks:game-buzz.onelink.me"
       ],
       "buildNumber": "1",
       "bundleIdentifier": "com.prilka.gamebuzz",
@@ -44,8 +44,8 @@
           "data": [
             {
               "scheme": "https",
-              "host": "cloak-prill.netlify.app",
-              "pathPrefix": "/gamebuzz"
+              "host": "game-buzz.onelink.me",
+              "pathPrefix": "/dn6a/rd1ojjzs"
             }
           ],
           "category": [
