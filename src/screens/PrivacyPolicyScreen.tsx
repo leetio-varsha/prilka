@@ -22,8 +22,8 @@ const PrivacyPolicyContent = () => {
       </Heading>
       <Text>Effective Date: 09/02/2024</Text>
       <Text>
-        Thank you for using Game Buzz, a React Native news feed app developed by Prilka. This Privacy Policy is designed
-        to help you understand how your personal information is collected, used, and safeguarded when you use our mobile
+        Thank you for using Game Buzz, a news feed app developed by Prilka. This Privacy Policy is designed to help you
+        understand how your personal information is collected, used, and safeguarded when you use our mobile
         application.
       </Text>
       <Heading size="md" mt={5}>
