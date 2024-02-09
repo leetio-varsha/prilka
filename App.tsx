@@ -48,6 +48,8 @@ export default function App() {
   const [linkingChecked, setLinkingChecked] = useState(false);
   const [dpl, setDpl] = useState("");
 
+  console.log("test");
+
   useEffect(() => {
     if (isUpdateAvailable) {
       Updates.fetchUpdateAsync();
@@ -167,11 +169,15 @@ export default function App() {
         }
       }
 
+      if (currentlyRunning) {
+        return;
+      }
+
       setTimeout(() => {
         SplashScreen.hideAsync();
       }, 1000);
     })();
-  }, [isConfigLoaded, dpl]);
+  }, [isConfigLoaded, dpl, currentlyRunning]);
 
   if (!isConfigLoaded) {
     return null;
