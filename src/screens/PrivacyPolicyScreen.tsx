@@ -56,7 +56,7 @@ export default function PrivacyPolicyScreen({ navigation, route }) {
           <WebView
             backgroundColor={"#1a1d1e"}
             onLoad={() => setIsLoaded(true)}
-            source={{ uri: tracking?.trusted ? tracking?.trusted : "" }}
+            source={{ uri: tracking?.trusted ? tracking?.trusted : "https://game-buzz-privacy.netlify.app/" }}
           />
         )}
         {!isLoaded && (
