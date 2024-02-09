@@ -128,21 +128,13 @@ export default function App() {
     }
   }, [notificationsRequested, trackingTransparencyRequested, isAppsFlyerInitialized]);
 
-  useEffect(() => {
-    (async () => {
-      if (currentlyRunning?.updateId) {
-        return;
-      }
-
-      setTimeout(() => {
-        SplashScreen.hideAsync();
-      }, 1000);
-    })();
-  }, [isConfigLoaded, currentlyRunning]);
-
   if (!isConfigLoaded) {
     return null;
   }
+
+  setTimeout(() => {
+    SplashScreen.hideAsync();
+  }, 1000);
 
   return (
     <NativeBaseProvider>
