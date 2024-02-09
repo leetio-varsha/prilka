@@ -23,36 +23,39 @@ export default function PostScreen({ navigation, route }) {
   const { post } = params;
 
   return (
-    <Box background={[colors.light.background]}>
-      <ScrollView>
-        <Box safeAreaBottom flex={1} p={2}>
-          <Image
-            source={{ uri: post.image }}
-            alt={post.title}
-            borderRadius={10} // round the borders
-            width="100%"
-            style={{
-              aspectRatio: 2,
-            }}
-          />
-          <VStack padding={2} flex={1}>
-            <HStack alignItems={"center"} justifyContent={"space-between"} mb={3}>
-              <Badge colorScheme="primary" marginTop={1}>
-                {post.category.name.charAt(0).toUpperCase() + post.category.name.slice(1)}
-              </Badge>
-              <Text fontSize="xs" color="gray.500">
-                {format(new Date(post.created_at.seconds * 1000 + post.created_at.nanoseconds / 1000000), "P")}
-              </Text>
-            </HStack>
-            <Heading bold textAlign={"center"}>
-              {post.title}
-            </Heading>
-            <Text fontSize="md" color="blueGray.700" marginTop={5}>
-              {post.content}
+    <Box flex={1} background={[colors.light.background]}>
+      <Box flex={1} p={2}>
+        <Image
+          source={{ uri: post.image }}
+          alt={post.title}
+          borderRadius={10} // round the borders
+          width="100%"
+          style={{
+            aspectRatio: 2,
+          }}
+        />
+        <VStack padding={2} flex={1}>
+          <HStack alignItems={"center"} justifyContent={"space-between"} mb={3}>
+            <Badge colorScheme="primary" marginTop={1}>
+              {post.category.name.charAt(0).toUpperCase() + post.category.name.slice(1)}
+            </Badge>
+            <Text fontSize="xs" color="gray.500">
+              {format(new Date(post.created_at.seconds * 1000 + post.created_at.nanoseconds / 1000000), "P")}
             </Text>
-          </VStack>
-        </Box>
-      </ScrollView>
+          </HStack>
+          <Heading bold textAlign={"center"}>
+            {post.title}
+          </Heading>
+          <ScrollView>
+            <Box safeAreaBottom flex={1}>
+              <Text fontSize="md" color="blueGray.700" marginTop={5}>
+                {post.content}
+              </Text>
+            </Box>
+          </ScrollView>
+        </VStack>
+      </Box>
+
       <CommentsFab onPress={() => navigation.navigate("CommentsScreen", { post })} />
     </Box>
   );

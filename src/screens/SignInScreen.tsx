@@ -133,6 +133,7 @@ export default function SignInScreen({ navigation, route }) {
                 }}
                 alignSelf="flex-end"
                 mt="1"
+                onPress={() => navigation.navigate("ForgotPasswordScreen")}
               >
                 Forget Password?
               </Link>

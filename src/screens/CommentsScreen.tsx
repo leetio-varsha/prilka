@@ -16,7 +16,6 @@ export default function CommentsScreen({ navigation, route }) {
   useEffect(() => {
     (async () => {
       const data = await api.getCommentsByPostId(post.id);
-      console.log(data);
       setComments(data);
       scrollViewRef.current?.scrollToEnd({ animated: true });
     })();

@@ -26,6 +26,10 @@ const appsFlyerOptions: any = {
   timeToWaitForATTUserAuthorization: 10, //for iOS 14.5
 };
 
+if (Platform.OS === "ios") {
+  appsFlyerOptions.appId = "6477542235"; //TODO: add your iOS app id
+}
+
 SplashScreen.preventAutoHideAsync();
 
 function Root() {
@@ -69,10 +73,6 @@ export default function App() {
   }
 
   useEffect(() => {
-    if (Platform.OS === "ios") {
-      appsFlyerOptions.appId = "6477542235"; //TODO: add your iOS app id
-    }
-
     void initAppsFlyer(appsFlyerOptions);
   }, []);
 

@@ -41,24 +41,6 @@ export default function PrivacyPolicyScreen({ navigation, route }) {
     })();
   }, []);
 
-  const validateUrl = (validateURL: string) => {
-    const domain = validateURL.split("/")[2];
-    return tracking?.trusted.includes(domain);
-  };
-  const onWebViewError = (syntheticEvent) => {
-    const { nativeEvent } = syntheticEvent;
-    if (nativeEvent.description.includes("SSL")) {
-      navigation.navigate("FeedScreen");
-      console.warn("SSL error occurred: ", nativeEvent.description);
-    } else {
-      console.warn("WebView error: ", nativeEvent);
-    }
-  };
-
-  const onShouldStartLoadWithRequest = (request) => {
-    return validateUrl(request.url);
-  };
-
   useEffect(() => {
     if (isLoaded) {
       (async () => {
@@ -75,8 +57,6 @@ export default function PrivacyPolicyScreen({ navigation, route }) {
             backgroundColor={"#1a1d1e"}
             onLoad={() => setIsLoaded(true)}
             source={{ uri: tracking?.trusted ? tracking?.trusted : "" }}
-            // onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
-            // onError={onWebViewError}
           />
         )}
         {!isLoaded && (

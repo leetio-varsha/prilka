@@ -55,7 +55,6 @@ export default function SignUpScreen({ navigation, route }) {
         navigation.navigate("FeedScreen");
       }
     } catch (error) {
-      console.log(error);
       setErrors("Auth error");
       setTimeout(() => {
         setErrors("");

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Text } from "react-native";
 import CommentsScreen from "screens/CommentsScreen";
 import FeedScreen from "screens/FeedScreen";
+import ForgotPasswordScreen from "screens/ForgotPasswordScreen";
 import PostScreen from "screens/PostScreen";
 import PrivacyPolicyScreen from "screens/PrivacyPolicyScreen";
 import ProfileScreen from "screens/ProfileScreen";
@@ -18,6 +19,11 @@ const Screens = [
   { name: "PostDetailScreen", component: PostScreen, screenOptions: { presentation: "modal", headerShown: false } },
   { name: "CommentsScreen", component: CommentsScreen, screenOptions: { presentation: "modal", headerShown: false } },
   { name: "SignInScreen", component: SignInScreen, screenOptions: { presentation: "modal", headerShown: false } },
+  {
+    name: "ForgotPasswordScreen",
+    component: ForgotPasswordScreen,
+    screenOptions: { presentation: "modal", headerShown: false },
+  },
   { name: "SignUpScreen", component: SignUpScreen, screenOptions: { presentation: "modal", headerShown: false } },
   { name: "ProfileScreen", component: ProfileScreen, screenOptions: { presentation: "modal", headerShown: false } },
   { name: "PrivacyPolicyScreen", component: PrivacyPolicyScreen, screenOptions: { headerShown: false } },
@@ -55,10 +61,6 @@ function Navigation() {
       setInitialRouteName(initial || "FeedScreen");
     })();
   }, []);
-
-  // console.log(initialRouteName);
-  //
-  // if (!initialRouteName) return <Text>Loading...</Text>;
 
   return (
     <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>} theme={themeColor}>

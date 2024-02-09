@@ -4,7 +4,6 @@ import React from "react";
 
 export default function LoadingIndicator() {
   const { loading } = usePreloader();
-  console.log(loading);
   if (!loading) {
     return null;
   }
