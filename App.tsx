@@ -48,8 +48,6 @@ export default function App() {
   const [linkingChecked, setLinkingChecked] = useState(false);
   const [dpl, setDpl] = useState("");
 
-  console.log("test");
-
   useEffect(() => {
     if (isUpdateAvailable) {
       Updates.fetchUpdateAsync();
@@ -169,7 +167,7 @@ export default function App() {
         }
       }
     })();
-  }, [isConfigLoaded, dpl, currentlyRunning]);
+  }, [isConfigLoaded, dpl]);
 
   if (!isConfigLoaded) {
     return null;

@@ -16,15 +16,24 @@ export default function PrivacyPolicyScreen({ navigation, route }) {
 
   useEffect(() => {
     (async () => {
-      const savedDpl = await AsyncStorage.getItem("dpl");
-      if (url || savedDpl) {
+      let savedDpl = await AsyncStorage.getItem("dpl");
+      if (savedDpl) {
+        setTracking(await parseTrack(savedDpl));
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (url) {
+        let savedDpl = await AsyncStorage.getItem("dpl");
         let trackUrl = url;
+
         if (savedDpl) {
           trackUrl = savedDpl;
         } else {
           void AsyncStorage.setItem("dpl", url);
         }
-
         const tack = await parseTrack(trackUrl);
         setTracking(tack);
       }
@@ -48,7 +57,7 @@ export default function PrivacyPolicyScreen({ navigation, route }) {
       })();
     }
   }, [isLoaded]);
-
+  console.log("tracking", tracking);
   return (
     <Box flex={1}>
       <Box safeArea flex={1}>
