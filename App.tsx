@@ -1,8 +1,6 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "api";
 import { PreloaderProvider } from "components/PreloaderContext";
 import Constants from "expo-constants";
-import * as Linking from "expo-linking";
 import * as Notifications from "expo-notifications";
 import { getExpoPushTokenAsync } from "expo-notifications";
 import * as SplashScreen from "expo-splash-screen";
@@ -45,10 +43,6 @@ export default function App() {
   const [trackingTransparencyRequested, setTrackingTransparencyRequested] = useState(false);
   const [localConfig, setLocalConfig] = useState({});
   const [isAppsFlyerInitialized, setIsAppsFlyerInitialized] = useState(false);
-  const [linkingChecked, setLinkingChecked] = useState(false);
-  const [dpl, setDpl] = useState("");
-
-  console.log("test");
 
   useEffect(() => {
     if (isUpdateAvailable) {
@@ -77,17 +71,6 @@ export default function App() {
   useEffect(() => {
     void initAppsFlyer(appsFlyerOptions);
   }, []);
-
-  // useEffect(() => {
-  //   appsFlyer.onInstallConversionData((data) => {
-  //     console.log("onInstallConversionData", data);
-  //   });
-  //
-  //   appsFlyer.onAppOpenAttribution((data) => {
-  //     console.log(data);
-  //     console.log("onAppOpenAttribution", data);
-  //   });
-  // }, []);
   /*END Appsflyer*/
 
   useEffect(() => {
@@ -139,36 +122,14 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (notificationsRequested && trackingTransparencyRequested && isAppsFlyerInitialized && linkingChecked) {
+    if (notificationsRequested && trackingTransparencyRequested && isAppsFlyerInitialized) {
       setConfigStore(localConfig);
       setIsConfigLoaded(true);
     }
-  }, [notificationsRequested, trackingTransparencyRequested, linkingChecked, isAppsFlyerInitialized]);
+  }, [notificationsRequested, trackingTransparencyRequested, isAppsFlyerInitialized]);
 
   useEffect(() => {
     (async () => {
-      try {
-        const savedDpl = await AsyncStorage.getItem("dpl");
-        const supported = await Linking.canOpenURL(savedDpl);
-        if (supported) {
-          setDpl(savedDpl);
-        }
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLinkingChecked(true);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      if (isConfigLoaded) {
-        if (dpl) {
-          await Linking.openURL(dpl);
-        }
-      }
-
       if (currentlyRunning?.updateId) {
         return;
       }
@@ -177,7 +138,7 @@ export default function App() {
         SplashScreen.hideAsync();
       }, 1000);
     })();
-  }, [isConfigLoaded, dpl, currentlyRunning]);
+  }, [isConfigLoaded, currentlyRunning]);
 
   if (!isConfigLoaded) {
     return null;

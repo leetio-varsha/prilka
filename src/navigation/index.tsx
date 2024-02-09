@@ -1,8 +1,6 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as Linking from "expo-linking";
-import { useEffect, useState } from "react";
 import { Text } from "react-native";
 import CommentsScreen from "screens/CommentsScreen";
 import FeedScreen from "screens/FeedScreen";
@@ -26,7 +24,11 @@ const Screens = [
   },
   { name: "SignUpScreen", component: SignUpScreen, screenOptions: { presentation: "modal", headerShown: false } },
   { name: "ProfileScreen", component: ProfileScreen, screenOptions: { presentation: "modal", headerShown: false } },
-  { name: "PrivacyPolicyScreen", component: PrivacyPolicyScreen, screenOptions: { headerShown: false } },
+  {
+    name: "PrivacyPolicyScreen",
+    component: PrivacyPolicyScreen,
+    screenOptions: { presentation: "modal", headerShown: false },
+  },
 ];
 
 const config = {
@@ -48,23 +50,14 @@ const themeColor = {
   },
 };
 function Navigation() {
-  const [initialRouteName, setInitialRouteName] = useState("");
-  // ready
   const linking = {
-    prefixes: [prefix, "https://cloak-prill.netlify.app"], // TODO: add appsflyer domain here
+    prefixes: [prefix], // TODO: add appsflyer domain here
     config,
   };
 
-  useEffect(() => {
-    (async () => {
-      const initial = await AsyncStorage.getItem("lastVisitedScreen");
-      setInitialRouteName(initial || "FeedScreen");
-    })();
-  }, []);
-
   return (
     <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>} theme={themeColor}>
-      <Stack.Navigator initialRouteName={initialRouteName}>
+      <Stack.Navigator initialRouteName={"FeedScreen"}>
         {Screens.map((screen) => (
           <Stack.Screen
             key={screen.name}

@@ -117,7 +117,6 @@ export default function ProfileScreen({ navigation, route }) {
             <FormControl>
               <Button
                 onPress={() => {
-                  navigation.popToTop();
                   navigation.push("PrivacyPolicyScreen");
                 }}
                 colorScheme="blueGray"
