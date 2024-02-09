@@ -51,7 +51,7 @@ const themeColor = {
 };
 function Navigation() {
   const linking = {
-    prefixes: [prefix], // TODO: add appsflyer domain here
+    prefixes: [prefix, "https://game-buzz.onelink.me"], // TODO: add appsflyer domain here
     config,
   };
 
