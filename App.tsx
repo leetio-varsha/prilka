@@ -168,20 +168,16 @@ export default function App() {
           await Linking.openURL(dpl);
         }
       }
-
-      if (currentlyRunning?.updateId) {
-        return;
-      }
-
-      setTimeout(() => {
-        SplashScreen.hideAsync();
-      }, 1000);
     })();
   }, [isConfigLoaded, dpl, currentlyRunning]);
 
   if (!isConfigLoaded) {
     return null;
   }
+
+  setTimeout(() => {
+    SplashScreen.hideAsync();
+  }, 1000);
 
   return (
     <NativeBaseProvider>
