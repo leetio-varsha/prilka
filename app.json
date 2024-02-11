@@ -22,7 +22,7 @@
       "associatedDomains": [
         "applinks:game-buzz.onelink.me"
       ],
-      "buildNumber": "1",
+      "buildNumber": "2",
       "bundleIdentifier": "com.prilka.gamebuzz",
       "config": {
         "usesNonExemptEncryption": false
