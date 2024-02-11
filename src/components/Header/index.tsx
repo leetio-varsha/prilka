@@ -30,7 +30,7 @@ export const Header = () => {
         <Image source={require("assets/logo.png")} size={"sm"} alt={"logo"} rounded={"xl"} />
         <VStack justifyContent={"center"}>
           <Heading size={"xl"} color={colors.dark.font} marginLeft={3}>
-            Game Buzz
+            Game Buzz test
           </Heading>
         </VStack>
       </HStack>
