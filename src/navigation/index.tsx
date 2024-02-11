@@ -1,7 +1,7 @@
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as Linking from "expo-linking";
-import { Text } from "react-native";
+import { Platform, Text } from "react-native";
 import CommentsScreen from "screens/CommentsScreen";
 import FeedScreen from "screens/FeedScreen";
 import ForgotPasswordScreen from "screens/ForgotPasswordScreen";
@@ -10,13 +10,14 @@ import PrivacyPolicyScreen from "screens/PrivacyPolicyScreen";
 import ProfileScreen from "screens/ProfileScreen";
 import SignInScreen from "screens/SignInScreen";
 import SignUpScreen from "screens/SignUpScreen";
+import { TransitionPresets, TransitionSpecs } from "@react-navigation/stack";
 const prefix = Linking.createURL("/");
 
 const Screens = [
   { name: "FeedScreen", component: FeedScreen, screenOptions: { headerShown: false } },
   { name: "PostDetailScreen", component: PostScreen, screenOptions: { presentation: "modal", headerShown: false } },
   { name: "CommentsScreen", component: CommentsScreen, screenOptions: { presentation: "modal", headerShown: false } },
-  { name: "SignInScreen", component: SignInScreen, screenOptions: { presentation: "modal", headerShown: false } },
+  { name: "SignInScreen", component: SignInScreen, screenOptions: { presentation: "modal", headerShown: false, } },
   {
     name: "ForgotPasswordScreen",
     component: ForgotPasswordScreen,

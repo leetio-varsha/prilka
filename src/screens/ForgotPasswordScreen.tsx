@@ -1,8 +1,10 @@
 import { usePreloader } from "components/PreloaderContext";
 import LoadingIndicator from "components/PreloaderContext/LoadingIndicator";
+import { StatusBar } from "expo-status-bar";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { Box, Button, Center, Divider, FormControl, Heading, Input, Text, VStack } from "native-base";
 import { useState } from "react";
+import { Platform } from "react-native";
 import { auth } from "services/firebaseInit";
 import { colors } from "styles/common";
 
@@ -30,7 +32,11 @@ export default function ForgotPasswordScreen({ navigation, route }) {
     <Box background={[colors.light.background]} flex={1}>
       <LoadingIndicator />
       <Center w="100%">
-        <Divider bg="blueGray.400" w={100} thickness="4" mt="1" orientation="horizontal" />
+        {Platform.OS === "ios" ? (
+          <Divider bg="blueGray.400" w={100} thickness="4" mt="1" orientation="horizontal" />
+        ) : (
+          <StatusBar style="dark" />
+        )}
         <Box safeArea p="2" py="8" w="90%">
           <Heading
             size="xl"

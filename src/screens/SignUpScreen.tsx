@@ -24,6 +24,8 @@ import useUserStore from "store/useUserStore";
 import { colors } from "styles/common";
 
 import api from "api";
+import { Platform } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 export default function SignUpScreen({ navigation, route }) {
   const { setLoading } = usePreloader();
@@ -74,7 +76,9 @@ export default function SignUpScreen({ navigation, route }) {
         </Alert>
       </Collapse>
       <Center w="100%">
-        <Divider bg="blueGray.400" w={100} thickness="4" mt="1" orientation="horizontal" />
+        {Platform.OS === "ios" ? (  <Divider bg="blueGray.400" w={100} thickness="4" mt="1" orientation="horizontal" />) : (
+          <StatusBar style="dark" />
+        )}
         <Box safeArea p="2" py="8" w="90%">
           <Heading color={colors.light.font} textAlign="center" fontSize="3xl" fontWeight={600}>
             Sign Up
