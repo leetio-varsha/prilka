@@ -1,7 +1,9 @@
 import api from "api";
 import { format } from "date-fns";
-import { Box, Button, Card, Heading, HStack, Image, Input, ScrollView, Text } from "native-base";
+import { StatusBar } from "expo-status-bar";
+import { Box, Button, Card, Divider, Heading, HStack, Image, Input, ScrollView, Text } from "native-base";
 import { useEffect, useRef, useState } from "react";
+import { Platform } from "react-native";
 import useUserStore from "store/useUserStore";
 import { colors } from "styles/common";
 
@@ -41,6 +43,11 @@ export default function CommentsScreen({ navigation, route }) {
 
   return (
     <Box background={[colors.light.background]} flex={1}>
+      {Platform.OS === "ios" ? (
+        <Divider bg="blueGray.400" w={100} thickness="4" mt="1" orientation="horizontal" />
+      ) : (
+        <StatusBar style="dark" />
+      )}
       <Box safeAreaBottom flex={1} p={2}>
         <Image
           source={{ uri: post.image }}

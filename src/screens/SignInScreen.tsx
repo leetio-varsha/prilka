@@ -2,6 +2,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import api from "api";
 import { usePreloader } from "components/PreloaderContext";
 import LoadingIndicator from "components/PreloaderContext/LoadingIndicator";
+import { StatusBar } from "expo-status-bar";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import {
   Alert,
@@ -23,6 +24,7 @@ import {
   VStack,
 } from "native-base";
 import { useState } from "react";
+import { Platform } from "react-native";
 import { auth } from "services/firebaseInit";
 import useUserStore from "store/useUserStore";
 import { colors } from "styles/common";
@@ -77,7 +79,11 @@ export default function SignInScreen({ navigation, route }) {
         </Alert>
       </Collapse>
       <Center w="100%">
-        <Divider bg="blueGray.400" w={100} thickness="4" mt="1" orientation="horizontal" />
+        {Platform.OS === "ios" ? (
+          <Divider bg="blueGray.400" w={100} thickness="4" mt="1" orientation="horizontal" />
+        ) : (
+          <StatusBar style="dark" />
+        )}
         <Box safeArea p="2" py="8" w="90%">
           <Heading
             size="xl"

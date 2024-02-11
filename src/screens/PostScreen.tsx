@@ -1,6 +1,8 @@
 import { CommentsFab } from "components/CommentsFab";
 import { format } from "date-fns";
-import { Badge, Box, Button, Heading, HStack, Image, ScrollView, Text, VStack } from "native-base";
+import { StatusBar } from "expo-status-bar";
+import { Badge, Box, Button, Divider, Heading, HStack, Image, ScrollView, Text, VStack } from "native-base";
+import { Platform } from "react-native";
 import useUserStore from "store/useUserStore";
 import { colors } from "styles/common";
 
@@ -24,6 +26,11 @@ export default function PostScreen({ navigation, route }) {
 
   return (
     <Box flex={1} background={[colors.light.background]}>
+      {Platform.OS === "ios" ? (
+        <Divider bg="blueGray.400" w={100} thickness="4" mt="1" orientation="horizontal" />
+      ) : (
+        <StatusBar style="dark" />
+      )}
       <Box flex={1} p={2}>
         <Image
           source={{ uri: post.image }}
