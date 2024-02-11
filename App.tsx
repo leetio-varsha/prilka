@@ -37,7 +37,7 @@ function Root() {
 }
 
 export default function App() {
-  const { currentlyRunning, availableUpdate, isUpdateAvailable, isUpdatePending } = Updates.useUpdates();
+  const { isDownloading, isChecking, isUpdateAvailable, isUpdatePending } = Updates.useUpdates();
 
   const [isConfigLoaded, setIsConfigLoaded] = useState(false);
   const { setConfigStore, config } = useConfigStore(({ setConfigStore, config }) => ({ setConfigStore, config }));
@@ -170,6 +170,14 @@ export default function App() {
   }, [isConfigLoaded, dpl]);
 
   if (!isConfigLoaded) {
+    return null;
+  }
+
+  if (isUpdateAvailable) {
+    return null;
+  }
+
+  if (isDownloading || isChecking) {
     return null;
   }
 
