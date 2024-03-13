@@ -9,9 +9,10 @@ import * as Updates from "expo-updates";
 import { NativeBaseProvider } from "native-base";
 import Navigation from "navigation/";
 import { useEffect, useState } from "react";
-import { Platform, View } from "react-native";
+import { Platform } from "react-native";
 import appsFlyer from "react-native-appsflyer";
 import { LogLevel, OneSignal } from "react-native-onesignal";
+import "services/notificationService";
 import useConfigStore from "store/useConfigStore";
 
 OneSignal.Debug.setLogLevel(LogLevel.Verbose);
@@ -147,9 +148,7 @@ export default function App() {
   return (
     <NativeBaseProvider>
       <PreloaderProvider>
-        <View style={{ flex: 1 }}>
-          <Root />
-        </View>
+        <Root />
       </PreloaderProvider>
     </NativeBaseProvider>
   );

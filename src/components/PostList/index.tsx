@@ -5,9 +5,10 @@ import { SkeletonCardHorizontal } from "components/Skeleton";
 import { format } from "date-fns";
 import { Badge, Box, Divider, FlatList, HStack, Image, Pressable, Spacer, Text, VStack } from "native-base";
 import React, { useEffect, useState } from "react";
-import { common } from "styles/common";
+import useCachedPostsStore from "store/useCachedPostsStore";
 
 export const PostList = () => {
+  const store = useCachedPostsStore((store) => store);
   const navigation = useNavigation<StackNavigationProp<any>>();
   const [posts, setPosts] = useState([
     { id: 1, type: "skeletop" },
@@ -62,12 +63,18 @@ export const PostList = () => {
   };
 
   return (
-    <Box flex={1} style={[common.paddingHrL]} paddingBottom={10}>
-      <Text fontSize="xl" bold marginTop={8} marginBottom={4} color={"gray.800"} style={[common.paddingHrL]}>
-        Feed
-      </Text>
-      <FlatList data={posts} renderItem={renderItem} keyExtractor={(item) => item.id} />
-    </Box>
+    <FlatList
+      style={{ flex: 1, paddingHorizontal: 17, paddingVertical: 0 }}
+      data={posts}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id}
+    />
+    // <Box flex={1} style={[common.paddingHrL]} paddingBottom={10}>
+    //   <Text fontSize="xl" bold marginTop={8} marginBottom={4} color={"gray.800"}>
+    //     Feed
+    //   </Text>
+    //   <FlatList data={posts} renderItem={renderItem} keyExtractor={(item) => item.id} />
+    // </Box>
   );
 };
 

@@ -1,8 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { usePreloader } from "components/PreloaderContext";
 import LoadingIndicator from "components/PreloaderContext/LoadingIndicator";
-import Constants from "expo-constants";
-import { getExpoPushTokenAsync } from "expo-notifications";
 import { updateProfile } from "firebase/auth";
 import {
   Alert,
@@ -24,8 +22,8 @@ import useUserStore from "store/useUserStore";
 import { colors } from "styles/common";
 
 import api from "api";
-import { Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { Platform } from "react-native";
 
 export default function SignUpScreen({ navigation, route }) {
   const { setLoading } = usePreloader();
@@ -42,21 +40,22 @@ export default function SignUpScreen({ navigation, route }) {
       const user = await api.createUser(email.trim(), password);
       if (user) {
         await updateProfile(user, { displayName });
-        const pushToken = await getExpoPushTokenAsync({
-          projectId: Constants.expoConfig.extra.eas.projectId,
-        });
+        // const pushToken = await getExpoPushTokenAsync({
+        //   projectId: Constants.expoConfig.extra.eas.projectId,
+        // });
         const userRecord = await api.createUserOrUpdate(user.uid, {
           displayName,
           email: user.email,
           uid: user.uid,
-          pushToken: pushToken.data,
+          // pushToken: pushToken.data,
         });
-        // Store the push token in your server
+
         updateUserStore(userRecord);
 
         navigation.navigate("FeedScreen");
       }
     } catch (error) {
+      console.log(error);
       setErrors("Auth error");
       setTimeout(() => {
         setErrors("");
@@ -76,7 +75,9 @@ export default function SignUpScreen({ navigation, route }) {
         </Alert>
       </Collapse>
       <Center w="100%">
-        {Platform.OS === "ios" ? (  <Divider bg="blueGray.400" w={100} thickness="4" mt="1" orientation="horizontal" />) : (
+        {Platform.OS === "ios" ? (
+          <Divider bg="blueGray.400" w={100} thickness="4" mt="1" orientation="horizontal" />
+        ) : (
           <StatusBar style="dark" />
         )}
         <Box safeArea p="2" py="8" w="90%">
